@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { api } from "../../server/api";
 
 import { Container, Main, Content, Buttons, Button } from "./styles";
 
@@ -12,9 +13,9 @@ interface INewUser {
 const NewUserContainer: React.FC<INewUser> = ({ imageUrl, name, url }) => {
   const route = useHistory();
 
-  function HandleAddNewUser() {
-    console.log("send message from api", { url });
-    alert(`${name} foi adicionado(a) ✨`);
+  async function HandleAddNewUser() {
+    const response = await api.post('/users',{url});
+    console.log(response);
     route.goBack();
   }
 

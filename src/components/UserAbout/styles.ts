@@ -66,30 +66,35 @@ export const UserContainer = styled.div`
   margin-bottom: 1.5rem;
 
   > img {
-    max-width: 100%;
+    justify-self: center;
+    max-width: min(100%, 300px);
     border-radius: 6px;
   }
 
-  @media (min-width: 1041px) {
-    width: 90%;
+  @media (min-width: 850px) {
     display: flex;
+    width: 90%;
   }
 `;
 
 export const About = styled.div`
-  @media (min-width: 1041px) {
+  width: 100%;
+
+  @media (min-width: 850px) {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     padding-left: 1rem;
   }
 `;
 
 export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 10px;
+
+  @media (min-width: 850px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 export const Name = styled.div`
@@ -112,6 +117,7 @@ export const ReposContainer = styled.div`
 export const TopText = styled.div`
   display: flex;
   align-items: center;
+
   padding-left: 20px;
   gap: 6px;
 `;
@@ -121,7 +127,7 @@ export const BookIcon = styled(RepoSvg)``;
 export const Repositories = styled.div`
   display: flex;
   max-width: 100%;
-  
+
   gap: 20px;
   padding: 20px;
 
@@ -130,8 +136,11 @@ export const Repositories = styled.div`
 `;
 
 export const Repositorie = styled.div`
-  display: grid;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-width: 270px;
 
   background: var(--primary-color);
 
@@ -152,6 +161,10 @@ export const TextsRepo = styled.div`
 
   p {
     color: var(--grey);
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 `;
 

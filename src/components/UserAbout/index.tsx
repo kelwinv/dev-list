@@ -1,5 +1,6 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
+import { api } from "../../server/api";
 
 import {
   Container,
@@ -23,114 +24,83 @@ import {
   EndRepo,
 } from "./styles";
 
-const UserAbout: React.FC = () => {
-  const route = useHistory();
-  
+interface IRepo {
+  id: number;
+  name: string;
+  html_url: string;
+  description: string;
+  language: string;
+  stargazers_count: number;
+}
 
+interface IUser {
+  id: number;
+  login: string;
+  avatar_url: string;
+  bio: string;
+  public_repos: number;
+  repos: IRepo[];
+}
+
+const UserAbout: React.FC = () => {
+  const [user, setUser] = useState<IUser>();
+  const route = useHistory();
+  const { id } = useParams<{ id?: string }>();
+
+  useEffect(() => {
+    api.get<IUser>(`/users/${id}`).then(({ data }) => {
+      setUser(data);
+    });
+  }, [id]);
   return (
     <Container>
       <Contant>
         <button onClick={() => route.goBack()}>
           <ExitIcon />
         </button>
-        <UserContainer>
-          <img
-            src="https://cdn.pixabay.com/photo/2015/01/12/10/45/man-597178__340.jpg"
-            alt="imagem do {nome}"
-          />
-          <About>
-            <Header>
-              <Name>Igor92</Name>
-              <RepoNumber>Repositorios: 19</RepoNumber>
-            </Header>
-            <AboutText>
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-            </AboutText>
-          </About>
-        </UserContainer>
-        <ReposContainer>
-          <TopText>
-            <BookIcon />
-            REPOSITORIOS
-          </TopText>
-          <Repositories>
-            <Repositorie>
-              <TextsRepo>
-                <h1>randomizador-de-texto</h1>
-                <p>
-                  um programa que pega seu texto/palavra embaralha e retorna
-                  todas as possibilidades de embaralho
-                </p>
-              </TextsRepo>
-              <a href="https://github.com/kelwinv/chat-com-socket.io">
-                https://github.com/kelwinv/chat-com-socket.io
-              </a>
-              <EndRepo>
-                <Language>CSS</Language>
-                <Stars>
-                  <StarIcon />2
-                </Stars>
-              </EndRepo>
-            </Repositorie>
-            <Repositorie>
-              <TextsRepo>
-                <h1>randomizador-de-texto</h1>
-                <p>
-                  um programa que pega seu texto/palavra embaralha e retorna
-                  todas as possibilidades de embaralho
-                </p>
-              </TextsRepo>
-              <a href="https://github.com/kelwinv/chat-com-socket.io">
-                https://github.com/kelwinv/chat-com-socket.io
-              </a>
-              <EndRepo>
-                <Language>CSS</Language>
-                <Stars>
-                  <StarIcon />2
-                </Stars>
-              </EndRepo>
-            </Repositorie>
-            <Repositorie>
-              <TextsRepo>
-                <h1>randomizador-de-texto</h1>
-                <p>
-                  um programa que pega seu texto/palavra embaralha e retorna
-                  todas as possibilidades de embaralho
-                </p>
-              </TextsRepo>
-              <a href="https://github.com/kelwinv/chat-com-socket.io">
-                https://github.com/kelwinv/chat-com-socket.io
-              </a>
-              <EndRepo>
-                <Language>CSS</Language>
-                <Stars>
-                  <StarIcon />2
-                </Stars>
-              </EndRepo>
-            </Repositorie>
-            <Repositorie>
-              <TextsRepo>
-                <h1>randomizador-de-texto</h1>
-                <p>
-                  um programa que pega seu texto/palavra embaralha e retorna
-                  todas as possibilidades de embaralho
-                </p>
-              </TextsRepo>
-              <a href="https://github.com/kelwinv/chat-com-socket.io">
-                https://github.com/kelwinv/chat-com-socket.io
-              </a>
-              <EndRepo>
-                <Language>CSS</Language>
-                <Stars>
-                  <StarIcon />2
-                </Stars>
-              </EndRepo>
-            </Repositorie>
-          </Repositories>
-        </ReposContainer>
+        {user && (
+          <>
+            <UserContainer>
+              <img src={user.avatar_url} alt="imagem de perfil" />
+              <About>
+                <Header>
+                  <Name>{user.login}</Name>
+                  <RepoNumber>Repositorios:{user.public_repos}</RepoNumber>
+                </Header>
+                <AboutText>{user.bio}</AboutText>
+              </About>
+            </UserContainer>
+
+            <ReposContainer>
+              <TopText>
+                <BookIcon />
+                REPOSITORIOS
+              </TopText>
+              <Repositories>
+                {user.repos.map((repo) => (
+                  <Repositorie key={repo.id}>
+                    <TextsRepo>
+                      <h1>{repo.name}</h1>
+                      <p>
+                        {repo.description}
+                      </p>
+                    </TextsRepo>
+                    <a href={repo.html_url}>
+                      Veja o repositorio no Github!
+                    </a>
+                    <EndRepo>
+                      <Language>{repo.language}</Language>
+                      <Stars>
+                        <StarIcon />
+                        <span>{repo.stargazers_count}</span>
+                      </Stars>
+                    </EndRepo>
+                  </Repositorie>
+                ))}
+              </Repositories>
+            </ReposContainer>
+          </>
+        )}
       </Contant>
     </Container>
   );

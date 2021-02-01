@@ -63,7 +63,10 @@ const UserInput: React.FC<IInput> = ({
   }
 
   function HandleSearch() {
-    if (inputValue === "" || inputValue === undefined) return;
+    if (inputValue === "" || inputValue === undefined) {
+      if (!setUserstate) return;
+      return setUserstate(firstUserList);
+    }
 
     if (listType === "github") {
       HandleGithubApi();
@@ -73,9 +76,7 @@ const UserInput: React.FC<IInput> = ({
       if (!setUserstate) return;
 
       if (userList && firstUserList) {
-        userList.push(...firstUserList);
-
-        const response: IUser[] = userList.filter((user) => {
+        const response: IUser[] = firstUserList.filter((user) => {
           const formatUser = user.name.toLocaleLowerCase();
           const formatInput = inputValue.toLocaleLowerCase();
 
@@ -94,10 +95,11 @@ const UserInput: React.FC<IInput> = ({
       <Input
         type="text"
         placeholder="pesquisa rapida"
+        aria-label="pesquisa rapida"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
       />
-      <Button onClick={() => HandleSearch()}>
+      <Button onClick={() => HandleSearch()} aria-label="Pesquisa">
         <EllipseIcon />
       </Button>
     </Container>

@@ -17,7 +17,7 @@ export const Container = styled.div`
 
     background: #ffffff;
 
-    height: 125px;
+    height: 200px;
   }
 `;
 
@@ -59,6 +59,7 @@ export const NameContainer = styled.div`
     max-height: initial;
     align-items: initial;
     text-align: initial;
+    margin: 0;
     gap: 0;
 
     justify-content: space-between;
@@ -68,17 +69,12 @@ export const NameContainer = styled.div`
 export const Name = styled.div`
   font-size: 2rem;
   font-weight: bold;
+  overflow-wrap: anywhere;
 `;
 
 export const Bio = styled.div`
   text-overflow: ellipsis;
   overflow: hidden;
-
-  @media (min-width: 1041px) {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
 `;
 
 export const MoreContainer = styled.div`
