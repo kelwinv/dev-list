@@ -5,5 +5,5 @@ export const GithubApi = axios.create({
 });
 
 export const api = axios.create({
-  baseURL: process.env.SERVER || "http://localhost:3333",
+  baseURL: process.env.SERVER || "https://listadev.herokuapp.com/",
 });
